@@ -5,8 +5,8 @@ NFI_PATH="${ROOT_PATH}/NostalgiaForInfinity/NostalgiaForInfinityX.py"
 FT_PATH="${ROOT_PATH}/freqtrade/user_data/strategies/NostalgiaForInfinityX.py"
 FT_PATHC="${ROOT_PATH}/freqtrade/user_data/data"
 FT_PATHH="${ROOT_PATH}/freqtrade/a.py"
-TG_TOKEN=""
-TG_CHAT_ID=""
+TG_TOKEN="5045471347:AAHRy-qTy4B9D3zqgplVy67W_jZgADRgqGM"
+TG_CHAT_ID="1447434924"
 
 cd $(dirname ${NFI_PATH})
 
@@ -25,13 +25,14 @@ if [[ $GITRESPONSE != $UPDATED ]]; then
         cp configs/blacklist-binance.json ${FT_PATHC}
         cp configs/pairlist-volume-binance-usdt.json ${FT_PATHC}
         cp configs/exampleconfig.json ${FT_PATHC}
-	      cp configs/exampleconfig-rebuy.json ${FT_PATHC}
-	      curl -s --data "text=🆕 <b>New <i>NostalgiaForInfinity</i> version</b> by <code>${GITCOMMITTER}</code>!%0ACommit: <code>$GITVERSION</code>%0AComment: <code>${GITCOMMENT}</code>%0A⏳ Please wait for reload..." \
+	cp configs/exampleconfig-rebuy.json ${FT_PATHC}
+	curl -s --data "text=🆕 <b>New <i>NostalgiaForInfinity</i> version</b> by <code>${GITCOMMITTER}</code>!%0ACommit: <code>$GITVERSION</code>%0AComment: <code>${GITCOMMENT}</code>%0A⏳ Please wait for reload..." \
                 --data "parse_mode=HTML" \
                 --data "chat_id=$TG_CHAT_ID" \
                 "https://api.telegram.org/bot${TG_TOKEN}/sendMessage"
         /usr/bin/docker restart dryrun > /dev/null &&
-	      curl -s --data "text=🆗 NFI reload has been completed!" \
+	sleep 120 &&
+	curl -s --data "text=🆗 NFI reload has been completed!" \
                 --data "parse_mode=HTML" \
                 --data "chat_id=$TG_CHAT_ID" \
                 "https://api.telegram.org/bot${TG_TOKEN}/sendMessage" 
