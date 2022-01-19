@@ -1,12 +1,15 @@
 ---
 version: '3'
 services:
-  freqtrade:
-    image: freqtradeorg/freqtrade:stable
+  freqtrade1:
+    build:
+      context: .
+      dockerfile: "./docker/Dockerfile.stable"
     restart: unless-stopped
-    container_name: freqtrade
+    container_name: freqtrade1
     volumes:
       - "./user_data:/freqtrade/user_data"
+      - "./NostalgiaForInfinityX.py:/freqtrade/NostalgiaForInfinityX.py"
     ports:
       - "8080:8080"
     command: >
