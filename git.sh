@@ -5,8 +5,8 @@ NFI_PATH="${ROOT_PATH}/NostalgiaForInfinity/NostalgiaForInfinityX.py"
 FT_PATH="${ROOT_PATH}/freqtrade/user_data/strategies/NostalgiaForInfinityX.py"
 FT_PATHC="${ROOT_PATH}/freqtrade/user_data/data"
 FT_PATHH="${ROOT_PATH}/freqtrade/a.py"
-TG_TOKEN="5045471347:AAHRy-qTy4B9D3zqgplVy67W_jZgADRgqGM"
-TG_CHAT_ID="1447434924"
+TG_TOKEN=""
+TG_CHAT_ID=""
 
 cd $(dirname ${NFI_PATH})
 
