@@ -1,32 +1,39 @@
 ---
 version: '3'
 services:
-  tests:
-    build:
-       context: .
-       dockerfile: "./docker/Dockerfile.custom"
-    container_name: freqtrade-backtesting
-    volumes:
-      - "./:/testing"
-    command: >
-      python -m pytest -ra -vv -s --log-cli-level=info --artifacts-path=artifacts/ ${EXTRA_ARGS:-tests/}
-    entrypoint: []
-    working_dir: /testing
-  backtesting:
-    build:
-       context: .
-       dockerfile: "./docker/Dockerfile.custom"
-    container_name: freqtrade-backtesting
+  freqtrade:
+    image: freqtradeorg/freqtrade:stable
+    restart: unless-stopped
+    container_name: freqtrade
     volumes:
       - "./user_data:/freqtrade/user_data"
-      - "./NostalgiaForInfinityX.py:/freqtrade/NostalgiaForInfinityX.py"
+    ports:
+      - "8080:8080"
     command: >
-      backtesting
-      --datadir user_data/data/${EXCHANGE:-binance}
-      --strategy-list NostalgiaForInfinityX
-      --timerange ${TIMERANGE:-20210601-20210701}
-      --config user_data/data/pairlists.json
-      --config user_data/data/${EXCHANGE:-binance}-usdt-static.json
-      --max-open-trades ${MAX_OPEN_TRADES:-5}
-      --stake-amount ${STAKE_AMOUNT:-unlimited}
-      --no-cache
+      trade
+      --logfile /freqtrade/user_data/logs/freqtrade.log
+      --db-url sqlite:////freqtrade/user_data/tradesv3.sqlite
+      --config /freqtrade/user_data/pairlist-volume-binance-usdt.json
+      --config /freqtrade/user_data/blacklist-binance.json
+      --config /freqtrade/user_data/config-true-rebuy.json
+      --config /freqtrade/user_data/config-true-secret.json
+      --strategy NostalgiaForInfinityX
+  dryrun:
+    build:
+      context: .
+      dockerfile: "./docker/Dockerfile.custom"
+    container_name: freqtrade-dryrun
+    ports:
+    - "8081:8080"
+    volumes:
+    - "./user_data:/freqtrade/user_data"
+    - "./NostalgiaForInfinityX.py:/freqtrade/NostalgiaForInfinityX.py"
+    command: >
+      trade
+      --logfile /freqtrade/user_data/logs/freqtrade-dryrun.log
+      --strategy NostalgiaForInfinityX
+      --dry-run
+      --config user_data/data/blacklist-binance.json
+      --config user_data/data/pairlist-volume-binance-usdt.json
+      --config user_data/data/config-dryrun-secret.json
+      --config user_data/data/config-dryrun-rebuy.json
