@@ -1,28 +1,29 @@
 ---
 version: '3'
 services:
-#  freqtrade:
-#    image: freqtradeorg/freqtrade:stable
-#    restart: unless-stopped
-#    container_name: freqtrade
-#    volumes:
-#      - "./user_data:/freqtrade/user_data"
-#      - "./NostalgiaForInfinityX.py:/freqtrade/NostalgiaForInfinityX.py"
-#    ports:
-#      - "8080:8080"
-#    command: >
-#      trade
-#      --logfile /freqtrade/user_data/logs/freqtrade.log
-#      --db-url sqlite:////freqtrade/user_data/tradesv3.sqlite
-#      --config /freqtrade/user_data/pairlist-volume-binance-usdt.json
-#      --config /freqtrade/user_data/blacklist-binance.json
-#      --config /freqtrade/user_data/exampleconfig-rebuy.json
-#      --config /freqtrade/user_data/exampleconfig_secret.json
-#      --strategy NostalgiaForInfinityX
+  freqtrade:
+    image: freqtradeorg/freqtrade:stable
+    restart: unless-stopped
+    container_name: freqtrade
+    volumes:
+      - "./user_data:/freqtrade/user_data"
+      - "./NostalgiaForInfinityX.py:/freqtrade/NostalgiaForInfinityX.py"
+    ports:
+      - "8080:8080"
+    command: >
+      trade
+      --logfile /freqtrade/user_data/logs/freqtrade.log
+      --db-url sqlite:////freqtrade/user_data/tradesv3.sqlite
+      --config /freqtrade/user_data/pairlist-volume-binance-usdt.json
+      --config /freqtrade/user_data/blacklist-binance.json
+      --config /freqtrade/user_data/exampleconfig-rebuy.json
+      --config /freqtrade/user_data/exampleconfig_secret.json
+      --strategy NostalgiaForInfinityX
   dryrun:
-    build:
-      context: .
-      dockerfile: "./docker/Dockerfile.custom"
+    image: freqtradeorg/freqtrade:stable
+    #build:
+    #  context: .
+    #  dockerfile: "./docker/Dockerfile.custom"
     container_name: freqtrade-dryrun
     ports:
     - "8081:8080"
@@ -33,8 +34,8 @@ services:
       trade
       --logfile /freqtrade/user_data/logs/freqtrade-dryrun.log
       --db-url sqlite:////freqtrade/user_data/tradesv3-dryrun.sqlite
-      --config user_data/data/blacklist-binance.json
-      --config user_data/data/pairlist-volume-binance-usdt.json
+      --config user_data/data/blacklist-kucoin.json
+      --config user_data/data/pairlist-volume-kucoin-usdt.json
       --config user_data/data/exampleconfig_secret.json
       --config user_data/data/exampleconfig-rebuy.json      
       --strategy NostalgiaForInfinityX
